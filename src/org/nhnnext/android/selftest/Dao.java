@@ -89,6 +89,8 @@ public class Dao {
 		String writeDate;
 		String imgName;
 		
+		FileDownloader fileDownloader = new FileDownloader(context);
+		
 		try{
 			JSONArray jArr = new JSONArray(jsonData);
 			
@@ -112,10 +114,11 @@ public class Dao {
 				try{
 					database.execSQL(sql);
 				}catch(Exception e){
-					Log.e("test", "DB error! - "+e);
-					e.printStackTrace();
+					//Log.e("test", "DB error! - "+e);
+					//e.printStackTrace();
 				}
 				
+				fileDownloader.downFile("http://54.64.250.239:5009/image/"+ imgName, imgName);
 				
 			}
 		}catch(JSONException e){

@@ -1,12 +1,20 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:myapp="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="org.nhnnext.android.selftest.MainActivity" >
 
     <item
-        android:id="@+id/custom_row_textView"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never"/>
+        android:id="@+id/action_item_add"
+        android:icon="@android:drawable/ic_menu_add"
+        android:title="Add"
+        myapp:showAsAction="ifRoom|withText"/>
+    <item
+        android:id="@+id/action_item_search"
+        android:icon="@android:drawable/ic_menu_search"
+        android:title="Action item with icon"
+        myapp:showAsAction="always"/>
+    <item
+        android:id="@+id/action_item_normal"
+        android:title="Normal item"/>
 
 </menu>

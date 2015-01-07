@@ -1,11 +1,14 @@
 package org.nhnnext.android.selftest;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -47,6 +50,15 @@ public class CustomAdapter extends ArrayAdapter<Article>{
 		tvTitle.setText(articleData.get(position).getTitle());
 		tvContent.setText(articleData.get(position).getContent());		
 		
+		String img_path = context.getFilesDir().getPath() + "/" + articleData.get(position).getImgName();
+		File img_load_path = new File(img_path);
+		
+		if(img_load_path.exists()){
+			Bitmap bitmap = BitmapFactory.decodeFile(img_path);
+			imageView.setImageBitmap(bitmap);
+		}
+		
+		/*
 		try{
 
 		//	Log.i("info", articleData.get(position).getImgName());
@@ -58,6 +70,7 @@ public class CustomAdapter extends ArrayAdapter<Article>{
 		}catch(IOException e){
 			Log.e("ERROR", "ERROR: " +e);
 		}
+		*/
 		return row;
 	}
 	

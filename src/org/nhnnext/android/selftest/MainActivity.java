@@ -3,25 +3,48 @@ package org.nhnnext.android.selftest;
 
 import java.util.ArrayList;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
+
+import com.devspark.sidenavigation.ISideNavigationCallback; 
+import com.devspark.sidenavigation.SideNavigationView;
+import com.devspark.sidenavigation.SideNavigationView.Mode;
 
 
-public class MainActivity extends Activity implements OnClickListener, OnItemClickListener{
+public class MainActivity extends ActionBarActivity implements OnClickListener, OnItemClickListener{
 
+	private SideNavigationView sideNavigationView;
+	
 	private ArrayList<Article> articleList;
+	private ListView listView;
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
+		getSupportActionBar().setHomeButtonEnabled(true);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		
+		sideNavigationView = (SideNavigationView)findViewById(R.id.side_navigation_view);
+		sideNavigationView.setMenuItems(R.menu.side_menu);
+		sideNavigationView.setMenuClickCallback(sideNavigationCallback);
+		sideNavigationView.setMode(Mode.LEFT);
+		
+	
 		
 		Button mButtonWrite =  (Button)findViewById(R.id.main_button_write);
 		Button mButtonRefresh = (Button)findViewById(R.id.main_button_refresh);
@@ -29,28 +52,132 @@ public class MainActivity extends Activity implements OnClickListener, OnItemCli
 		mButtonWrite.setOnClickListener(this);
 		mButtonRefresh.setOnClickListener(this);
 
-		ListView listView = (ListView)findViewById(R.id.custom_list_listView);
+		listView = (ListView)findViewById(R.id.custom_list_listView);
 		
-		/* 
-		 * Dao생성시 해당 context에 DB 생성
-		 * DB 연동 Json데이터를 getJsonData()로 불러 String 변수에 지정
-		 * 지정한 변수를 insertJsonData()로 레코드 생성 
-		 */
-		Dao dao = new Dao(getApplicationContext());
-		String testJsonData = dao.getJsonTestData();
-		dao.insertJsonData(testJsonData);
-		
-		articleList = dao.getArticleList();
-		CustomAdapter customAdapter = new CustomAdapter(this, R.layout.custom_list_row, articleList);
-		/* 
-		 * context를 넘기는 자리에 activity의 this를 넘길 수 있는 이유는 
-		 * activity가 context를 상속받았기 때문.
-		 */
-		listView.setAdapter(customAdapter);
-		listView.setOnItemClickListener(this);
+	}
+		@Override
+		public boolean onCreateOptionsMenu(Menu menu){
+			
+			getMenuInflater().inflate(R.menu.main, menu);
+			return true;
+	}
 
 	
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item){
+		
+		String text ="";
+		
+		switch(item.getItemId()){
+		case R.id.home:
+			text = "sideNavigationToggle";
+			sideNavigationView.toggleMenu();
+			break;
+		case R.id.action_item_add:
+			text = "Action item, with text, displayed if room exists";
+			break;
+		case R.id.action_item_search:
+			text = "Action item, icon only, always displayed";
+			break;
+		case R.id.action_item_normal:
+			text = "Normal menu item";
+			break;
+		default:
+			return false;
+			
+		}
+		Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+		return true;
 	}
+	
+	ISideNavigationCallback sideNavigationCallback = new ISideNavigationCallback() {
+		
+		@Override
+		public void onSideNavigationItemClick(int itemId) {
+			String text = "";
+			switch(itemId){
+			
+			case R.id.side_navigation_menu_add:
+				text = "add";
+				break;
+			case R.id.side_navigation_menu_call:
+				text = "call";
+				break;
+			case R.id.side_navigation_menu_camera:
+				text = "camera";
+				break;
+			case R.id.side_navigation_menu_delete:
+				text = "delete";
+				break;
+			case R.id.side_navigation_menu_text:
+				text = "text";
+				break;
+			default:
+				text = "";				
+			}
+			Toast.makeText(getApplicationContext(), "side menu: " + text, Toast.LENGTH_SHORT).show();
+		
+		}
+			
+			};
+	
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		
+		refreshData();
+		//listView();
+		
+	}
+		private void listView(){
+			
+			
+			//ListView listView = (ListView)findViewById(R.id.custom_list_listView);
+			Dao dao = new Dao(getApplicationContext());
+			articleList = dao.getArticleList();
+			
+			Log.i("test", "articleList count:" + articleList.size());
+			CustomAdapter customAdapter = new CustomAdapter(this, R.layout.custom_list_row, articleList);
+			/* 
+			 * context를 넘기는 자리에 activity의 this를 넘길 수 있는 이유는 
+			 * activity가 context를 상속받았기 때문.
+			 */
+			listView.setAdapter(customAdapter);
+			listView.setOnItemClickListener(this);
+
+		}
+	private final Handler handler = new Handler();
+	private void refreshData(){
+		new Thread(){
+			public void run(){
+				Proxy proxy = new Proxy();
+				Log.i("test", "json get!!!");
+				String jsonData = proxy.getJson();
+				Log.i("test", "json get2!!!" +  jsonData);
+				
+				/* 
+				 * Dao생성시 해당 context에 DB 생성
+				 * DB 연동 Json데이터를 getJsonData()로 불러 String 변수에 지정
+				 * 지정한 변수를 insertJsonData()로 레코드 생성 
+				 */
+				Dao dao = new Dao(getApplicationContext());
+				//String testJsonData = dao.getJsonTestData();
+				//dao.insertJsonData(testJsonData);
+				dao.insertJsonData(jsonData);
+				
+				handler.post(new Runnable(){
+					public void run(){
+						
+						Log.i("test", "handler ON!!!");
+						listView();
+					}
+				});
+			}
+		}.start();
+	}
+	
 	@Override
 	public void onClick(View arg0) {
 		
@@ -58,8 +185,9 @@ public class MainActivity extends Activity implements OnClickListener, OnItemCli
 		case R.id.main_button_write:
 			Intent intentWrite = new Intent(this, Write_article.class);
 			startActivity(intentWrite);
+			//startActivity(intentWrite);
 		case R.id.main_button_refresh:
-
+			refreshData();
 			break;
 		}
 		}

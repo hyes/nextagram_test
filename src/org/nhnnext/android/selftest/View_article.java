@@ -1,9 +1,12 @@
 package org.nhnnext.android.selftest;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -38,7 +41,14 @@ public class View_article extends Activity implements OnClickListener{
 		tvContent.setText(article.getContent());
 		tvWriteDate.setText(article.getWriteDate());
 		
+		String img_path = getApplicationContext().getFilesDir().getPath()+"/"+article.getImgName();
+		File img_load_path = new File(img_path);
 		
+		if(img_load_path.exists()){
+			Bitmap bitmap = BitmapFactory.decodeFile(img_path);
+			ivImage.setImageBitmap(bitmap);
+		}
+		/*
 		try{
 			
 			InputStream is = getApplicationContext().getAssets().open(article.getImgName());
@@ -49,6 +59,7 @@ public class View_article extends Activity implements OnClickListener{
 		}catch(IOException e){
 			Log.e("ERROR", "ERROR: " +e);
 		}
+		*/
 	
 	}
 
