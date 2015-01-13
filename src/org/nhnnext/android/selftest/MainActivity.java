@@ -23,8 +23,8 @@ import com.devspark.sidenavigation.SideNavigationView;
 import com.devspark.sidenavigation.SideNavigationView.Mode;
 
 
-public class MainActivity extends ActionBarActivity implements OnClickListener, OnItemClickListener{
-
+public class MainActivity extends ActionBarActivity implements OnItemClickListener{
+//버튼 지우고 OnClickListener 
 	private SideNavigationView sideNavigationView;
 	
 	private ArrayList<Article> articleList;
@@ -46,11 +46,11 @@ public class MainActivity extends ActionBarActivity implements OnClickListener, 
 		
 	
 		
-		Button mButtonWrite =  (Button)findViewById(R.id.main_button_write);
-		Button mButtonRefresh = (Button)findViewById(R.id.main_button_refresh);
-		
-		mButtonWrite.setOnClickListener(this);
-		mButtonRefresh.setOnClickListener(this);
+//		Button mButtonWrite =  (Button)findViewById(R.id.main_button_write);
+//		Button mButtonRefresh = (Button)findViewById(R.id.main_button_refresh);
+//		
+//		mButtonWrite.setOnClickListener(this);
+//		mButtonRefresh.setOnClickListener(this);
 
 		listView = (ListView)findViewById(R.id.custom_list_listView);
 		
@@ -70,15 +70,19 @@ public class MainActivity extends ActionBarActivity implements OnClickListener, 
 		String text ="";
 		
 		switch(item.getItemId()){
-		case R.id.home:
+		case android.R.id.home:
 			text = "sideNavigationToggle";
 			sideNavigationView.toggleMenu();
 			break;
 		case R.id.action_item_add:
-			text = "Action item, with text, displayed if room exists";
+			Intent intentWrite = new Intent(this, Write_article.class);
+			startActivity(intentWrite);
+			
+			text = "gogoSSING~~~";
 			break;
-		case R.id.action_item_search:
-			text = "Action item, icon only, always displayed";
+		case R.id.action_item_refresh:
+			refreshData();
+			text = "REFRESH~~~";
 			break;
 		case R.id.action_item_normal:
 			text = "Normal menu item";
@@ -91,6 +95,11 @@ public class MainActivity extends ActionBarActivity implements OnClickListener, 
 		return true;
 	}
 	
+	private void intentAddFunc(){
+		Intent intentWrite = new Intent(this, Write_article.class);
+		startActivity(intentWrite);
+	}
+	
 	ISideNavigationCallback sideNavigationCallback = new ISideNavigationCallback() {
 		
 		@Override
@@ -99,16 +108,16 @@ public class MainActivity extends ActionBarActivity implements OnClickListener, 
 			switch(itemId){
 			
 			case R.id.side_navigation_menu_add:
-				text = "add";
+				intentAddFunc();
 				break;
-			case R.id.side_navigation_menu_call:
-				text = "call";
-				break;
-			case R.id.side_navigation_menu_camera:
-				text = "camera";
-				break;
-			case R.id.side_navigation_menu_delete:
-				text = "delete";
+//			case R.id.side_navigation_menu_call:
+//				text = "call";
+//				break;
+//			case R.id.side_navigation_menu_camera:
+//				text = "camera";
+//				break;
+			case R.id.side_navigation_menu_refresh:
+				refreshData();
 				break;
 			case R.id.side_navigation_menu_text:
 				text = "text";
@@ -177,20 +186,20 @@ public class MainActivity extends ActionBarActivity implements OnClickListener, 
 			}
 		}.start();
 	}
-	
-	@Override
-	public void onClick(View arg0) {
-		
-		switch(arg0.getId()){
-		case R.id.main_button_write:
-			Intent intentWrite = new Intent(this, Write_article.class);
-			startActivity(intentWrite);
-			//startActivity(intentWrite);
-		case R.id.main_button_refresh:
-			refreshData();
-			break;
-		}
-		}
+//	
+//	@Override
+//	public void onClick(View arg0) {
+//		
+//		switch(arg0.getId()){
+//		case R.id.main_button_write:
+//			Intent intentWrite = new Intent(this, Write_article.class);
+//			startActivity(intentWrite);
+//			break;
+//		case R.id.main_button_refresh:
+//			refreshData();
+//			break;
+//		}
+//		}
 	@Override
 	public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
 	

@@ -118,7 +118,7 @@ public class Dao {
 					//e.printStackTrace();
 				}
 				
-				fileDownloader.downFile("http://54.64.250.239:5009/image/"+ imgName, imgName);
+				fileDownloader.downFile("http://192.168.56.1:5009/image/"+ imgName, imgName);
 				
 			}
 		}catch(JSONException e){

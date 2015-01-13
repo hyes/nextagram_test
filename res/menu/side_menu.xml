@@ -5,18 +5,18 @@
         android:id="@+id/side_navigation_menu_add"
         android:icon="@android:drawable/ic_menu_add"
         android:title="add" />
-    <item
+ <!--    <item
 	      android:id="@+id/side_navigation_menu_call"
 	      android:icon="@android:drawable/ic_menu_call"
-	      android:title="call" />
+	      android:title="call" /> -->
     <item
-	      android:id="@+id/side_navigation_menu_delete"
-	      android:icon="@android:drawable/ic_menu_delete"
-	      android:title="delete" />
-     <item
+	      android:id="@+id/side_navigation_menu_refresh"
+	      android:icon="@android:drawable/ic_menu_rotate"
+	      android:title="refresh" />
+<!--      <item
 	    android:id="@+id/side_navigation_menu_camera"
 	    android:icon="@android:drawable/ic_menu_camera"
-	    android:title="camera" />
+	    android:title="camera" /> -->
 		          
     <item
 	    android:id="@+id/side_navigation_menu_text"

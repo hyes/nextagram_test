@@ -9,8 +9,8 @@
         android:title="Add"
         myapp:showAsAction="ifRoom|withText"/>
     <item
-        android:id="@+id/action_item_search"
-        android:icon="@android:drawable/ic_menu_search"
+        android:id="@+id/action_item_refresh"
+        android:icon="@android:drawable/ic_menu_rotate"
         android:title="Action item with icon"
         myapp:showAsAction="always"/>
     <item

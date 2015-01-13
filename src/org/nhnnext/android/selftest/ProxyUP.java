@@ -40,7 +40,7 @@ public class ProxyUP {
     			e.printStackTrace();
     		}
     		
-    		client.post("http://192.168.1.13:5009/upload", params, responseHandler); 
+    		client.post("http://192.168.56.1:5009/upload", params, responseHandler); 
     	  } 
 
     	
@@ -53,7 +53,7 @@ public class ProxyUP {
                        
                         FileInputStream fis = new FileInputStream(filePath);
                        
-                        URL url = new URL("http://54.64.250.239:5009/upload");
+                        URL url = new URL("http://192.168.56.1:5009/upload");
                        
                         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                        
